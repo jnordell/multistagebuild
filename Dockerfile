@@ -17,6 +17,6 @@ COPY --from=builder /app/server /server
 # Run the web service on container startup.
 CMD ["/server"]
 
-FROM builder
+#FROM builder
 
-RUN echo "mulle" > /tmp/mulle
+#RUN echo "mulle" > /tmp/mulle
