@@ -9,7 +9,7 @@ COPY . ./
 
 RUN scl enable go-toolset-1.11 'CGO_ENABLED=0 GOOS=linux go build -mod=readonly -v -o server'
 
-FROM registry.access.redhat.com/ubi7/go-toolset
+FROM registry.access.redhat.com/ubi7/go-toolset AS runtime
 
 # Copy the binary to the production image from the builder stage.
 COPY --from=builder /app/server /server
@@ -17,6 +17,6 @@ COPY --from=builder /app/server /server
 # Run the web service on container startup.
 CMD ["/server"]
 
-FROM builder
+FROM runtime AS final
 
 RUN echo "mulle" > /tmp/mulle
