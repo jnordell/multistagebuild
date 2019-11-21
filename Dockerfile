@@ -19,4 +19,4 @@ CMD ["/server"]
 
 FROM runtime AS final
 
-RUN echo "mulle" > /tmp/mulle
+RUN echo "something" > /app/file123
