@@ -1,7 +1,5 @@
 FROM registry.access.redhat.com/dotnet/dotnet-22-rhel7:2.2-16 AS build
 
-USER root
-
 WORKDIR /src
 
 RUN echo "test" > test.txt
