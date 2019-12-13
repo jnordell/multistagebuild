@@ -1,22 +1,11 @@
-FROM registry.access.redhat.com/ubi7/ubi:latest AS builder
+FROM registry.access.redhat.com/dotnet/dotnet-22-rhel7:2.2-16 AS build
 
-RUN yum install -y go-toolset-1.11-golang
+USER root
 
-WORKDIR /app
-COPY go.* ./
-RUN scl enable go-toolset-1.11 'go mod download'
-COPY . ./
+WORKDIR /src
 
-RUN scl enable go-toolset-1.11 'CGO_ENABLED=0 GOOS=linux go build -mod=readonly -v -o server'
+RUN echo "test" > test.txt
 
-FROM registry.access.redhat.com/ubi7/go-toolset AS runtime
+FROM registry.access.redhat.com/dotnet/dotnet-22-runtime-rhel7:2.2-16
 
-# Copy the binary to the production image from the builder stage.
-COPY --from=builder /app/server /server
-
-# Run the web service on container startup.
-CMD ["/server"]
-
-FROM runtime
-
-RUN echo "something" > /tmp/file123
+COPY --from=build /src /src
